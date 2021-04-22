@@ -82,5 +82,6 @@ namespace Cms.Auth.IdentityProvider
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
     }
 }
