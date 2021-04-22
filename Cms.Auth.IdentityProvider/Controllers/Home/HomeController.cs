@@ -25,7 +25,7 @@ namespace Cms.Auth.IdentityProvider.Controllers
 
         public IActionResult Index()
         {
-            if (_environment.IsDevelopment())
+           // if (_environment.IsDevelopment())
             {
                 // only show in development
                 return View();
