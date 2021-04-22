@@ -69,9 +69,10 @@ namespace Cms.Auth.IdentityProvider.Configuration
                 Password = "password",
                 Claims = new List<Claim> {
                     new Claim(JwtClaimTypes.Email, "shahidkochak@gmail.com"),
-                    new Claim(JwtClaimTypes.Role, "admin")
+                    new Claim(JwtClaimTypes.Role, "admin"),
+                    new Claim(JwtClaimTypes.Name, "shahidkochak@gmail.com")
                 }
-             }
+             },
         };
 
         public static IEnumerable<ApiScope> GetApiScopes => new List<ApiScope> {

@@ -25,19 +25,19 @@ namespace Cms.Auth.IdentityProvider
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
             //services.AddRazorPages();
-            services.AddMvc((options) => { options.EnableEndpointRouting = false; });
             //configure identity server to use as service
             services.AddIdentityServer()
+                 .AddTestUsers(InMemoryConfiguration.GetApiUsers)
                  .AddInMemoryApiScopes(InMemoryConfiguration.GetApiScopes)
-                 .AddInMemoryIdentityResources(InMemoryConfiguration.GetIdentityResources)
+                 //.AddInMemoryIdentityResources(InMemoryConfiguration.GetIdentityResources)
                  .AddDeveloperSigningCredential()
                 //.AddSigningCredential(new X509Certificate2(Environment.GetEnvironmentVariable("CERTIFICATE_PATH"), Environment.GetEnvironmentVariable("CERTIFICATE_PASSWORD")))
-                .AddTestUsers(InMemoryConfiguration.GetApiUsers)
                 .AddInMemoryClients(InMemoryConfiguration.GetApiClients)
                 .AddInMemoryApiResources(InMemoryConfiguration.GetApiResources);
-                //Collection of different apis allow to use our authorization service
+            //Collection of different apis allow to use our authorization service
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,16 +58,8 @@ namespace Cms.Auth.IdentityProvider
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseMvc();
             app.UseRouting();
-
             app.UseAuthorization();
-
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapRazorPages();
-            //});
             app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
         }
     }

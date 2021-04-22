@@ -126,11 +126,10 @@ namespace Cms.Auth.IdentityProvider.Controllers
                             ExpiresUtc = DateTimeOffset.UtcNow.Add(AccountOptions.RememberMeLoginDuration)
                         };
                     };
-
                     // issue authentication cookie with subject ID and username
                     var isuser = new IdentityServerUser(user.SubjectId)
                     {
-                        DisplayName = user.Username
+                        DisplayName = user.Username,
                     };
 
                     await HttpContext.SignInAsync(isuser, props);
