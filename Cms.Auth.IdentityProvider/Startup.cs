@@ -53,7 +53,7 @@ namespace Cms.Auth.IdentityProvider
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             }));
-
+            services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,6 +81,12 @@ namespace Cms.Auth.IdentityProvider
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
