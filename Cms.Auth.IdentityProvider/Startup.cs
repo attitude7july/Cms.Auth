@@ -1,6 +1,5 @@
 using Cms.Auth.IdentityProvider.Configuration;
 using IdentityServer4.Configuration;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -76,25 +75,12 @@ namespace Cms.Auth.IdentityProvider
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-
-            //app.UseGoogleAuthentication(new GoogleOptions
-            //{
-            //    AuthenticationScheme = "Google",
-            //    DisplayName = "Google",
-            //    SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
-            //    ClientId = "777277052192-g9kis02f5sqg45ihea4o1ud3ma92d097.apps.googleusercontent.com",
-            //    ClientSecret = "6bqtKHdfnr24Wpkuc-B2OInx"
-            //});
-
-            //app.UseCookieAuthentication((cookieOptions) =>
-            //{
-            //    cookieOptions.AuthenticationScheme = "Cookies";
-            //    cookieOptions.AutomaticAuthenticate = true;
-            //    cookieOptions.AutomaticChallenge = true;
-            //    cookieOptions.LoginPath = new PathString("/Account/Login");
-            //});
             app.UseCors();
-            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
-        }
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
     }
 }
