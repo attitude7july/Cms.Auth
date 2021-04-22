@@ -20,4 +20,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 #ENTRYPOINT ["dotnet", "Cms.Auth.IdentityProvider.dll"]
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet Authorization.Api.dll
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet Cms.Auth.IdentityProvider.dll
