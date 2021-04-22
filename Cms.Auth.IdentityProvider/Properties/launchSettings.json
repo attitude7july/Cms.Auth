@@ -1,0 +1,22 @@
+{
+  "profiles": {
+    "Cms.Auth.IdentityProvider": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "CERTIFICATE_PASSWORD": "asma123",
+        "CERTIFICATE_PATH": "G:\\asmatechnocrats\\Self-SignedCertificates\\Cms.Auth\\authserver.pfx",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
+      },
+      "dotnetRunMessages": "true",
+      "applicationUrl": "http://localhost:5000"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true
+    }
+  }
+}
