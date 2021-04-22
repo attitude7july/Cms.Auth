@@ -1,15 +1,12 @@
 using Cms.Auth.IdentityProvider.Configuration;
+using IdentityServer4.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 
 namespace Cms.Auth.IdentityProvider
 {
@@ -25,19 +22,39 @@ namespace Cms.Auth.IdentityProvider
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
             //services.AddRazorPages();
             //configure identity server to use as service
-            services.AddIdentityServer()
-                 .AddTestUsers(InMemoryConfiguration.GetApiUsers)
-                 .AddInMemoryApiScopes(InMemoryConfiguration.GetApiScopes)
-                 //.AddInMemoryIdentityResources(InMemoryConfiguration.GetIdentityResources)
-                 .AddDeveloperSigningCredential()
-                //.AddSigningCredential(new X509Certificate2(Environment.GetEnvironmentVariable("CERTIFICATE_PATH"), Environment.GetEnvironmentVariable("CERTIFICATE_PASSWORD")))
-                .AddInMemoryClients(InMemoryConfiguration.GetApiClients)
-                .AddInMemoryApiResources(InMemoryConfiguration.GetApiResources);
+            services.AddIdentityServer(options =>
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+                options.UserInteraction.LoginUrl = "/Account/Login";
+                options.UserInteraction.LogoutUrl = "/Account/Logout";
+                options.Authentication = new AuthenticationOptions()
+                {
+                    CookieLifetime = TimeSpan.FromHours(10), // ID server cookie timeout set to 10 hours
+                    CookieSlidingExpiration = true
+                };
+            })
+            .AddTestUsers(InMemoryConfiguration.GetApiUsers)
+            .AddInMemoryApiScopes(InMemoryConfiguration.GetApiScopes)
+            //.AddInMemoryIdentityResources(InMemoryConfiguration.GetIdentityResources)
+            .AddDeveloperSigningCredential()
+            //.AddSigningCredential(new X509Certificate2(Environment.GetEnvironmentVariable("CERTIFICATE_PATH"), Environment.GetEnvironmentVariable("CERTIFICATE_PASSWORD")))
+            .AddInMemoryClients(InMemoryConfiguration.GetApiClients)
+            .AddInMemoryApiResources(InMemoryConfiguration.GetApiResources);
             //Collection of different apis allow to use our authorization service
 
-            services.AddMvc();
+            services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
+            {
+                b.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,7 +76,24 @@ namespace Cms.Auth.IdentityProvider
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseAuthorization();
+
+            //app.UseGoogleAuthentication(new GoogleOptions
+            //{
+            //    AuthenticationScheme = "Google",
+            //    DisplayName = "Google",
+            //    SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
+            //    ClientId = "777277052192-g9kis02f5sqg45ihea4o1ud3ma92d097.apps.googleusercontent.com",
+            //    ClientSecret = "6bqtKHdfnr24Wpkuc-B2OInx"
+            //});
+
+            //app.UseCookieAuthentication((cookieOptions) =>
+            //{
+            //    cookieOptions.AuthenticationScheme = "Cookies";
+            //    cookieOptions.AutomaticAuthenticate = true;
+            //    cookieOptions.AutomaticChallenge = true;
+            //    cookieOptions.LoginPath = new PathString("/Account/Login");
+            //});
+            app.UseCors();
             app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
         }
     }

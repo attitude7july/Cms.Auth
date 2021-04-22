@@ -11,11 +11,13 @@ using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Cms.Auth.IdentityProvider.Controllers
@@ -130,10 +132,12 @@ namespace Cms.Auth.IdentityProvider.Controllers
                     var isuser = new IdentityServerUser(user.SubjectId)
                     {
                         DisplayName = user.Username,
+                        AdditionalClaims = user.Claims
                     };
-
+                    var identity = new ClaimsIdentity("password");
+                    identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
                     await HttpContext.SignInAsync(isuser, props);
-
+                   // await HttpContext.SignInAsync(new ClaimsPrincipal(identity), props);
                     if (context != null)
                     {
                         if (context.IsNativeClient())

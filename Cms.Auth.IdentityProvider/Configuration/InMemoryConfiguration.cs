@@ -68,9 +68,9 @@ namespace Cms.Auth.IdentityProvider.Configuration
                 Username = "shahid",
                 Password = "password",
                 Claims = new List<Claim> {
-                    new Claim(JwtClaimTypes.Email, "shahidkochak@gmail.com"),
-                    new Claim(JwtClaimTypes.Role, "admin"),
-                    new Claim(JwtClaimTypes.Name, "shahidkochak@gmail.com")
+                    new Claim(ClaimTypes.Email, "shahidkochak@gmail.com"),
+                    new Claim(ClaimTypes.Role, "admin"),
+                    new Claim(ClaimTypes.Name, "shahidkochak@gmail.com")
                 }
              },
         };
