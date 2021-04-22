@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Auth.Domain", "Cms.Auth.Domain\Cms.Auth.Domain.csproj", "{D6E25DFE-A002-4596-AAAD-E59D00272305}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Auth.Database", "Cms.Auth.Database\Cms.Auth.Database.csproj", "{BF086DF3-A21C-474D-98D5-37FDE20F9F2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Auth.Database", "Cms.Auth.Database\Cms.Auth.Database.csproj", "{BF086DF3-A21C-474D-98D5-37FDE20F9F2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Auth.DataAcces", "Cms.Auth.DataAcces\Cms.Auth.DataAcces.csproj", "{21FA90C3-0F30-4C7C-8B72-84CA89583E30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Auth.DataAcces", "Cms.Auth.DataAcces\Cms.Auth.DataAcces.csproj", "{21FA90C3-0F30-4C7C-8B72-84CA89583E30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Auth.Service", "Cms.Auth.Service\Cms.Auth.Service.csproj", "{D7B5B55C-DCDF-4462-8A9D-FD98F4C672E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Auth.Service", "Cms.Auth.Service\Cms.Auth.Service.csproj", "{D7B5B55C-DCDF-4462-8A9D-FD98F4C672E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cms.Auth.IdentityProvider", "Cms.Auth.IdentityProvider\Cms.Auth.IdentityProvider.csproj", "{7D707478-5EE6-4D8A-8FB1-18FF1F0921C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cms.Auth.IdentityProvider", "Cms.Auth.IdentityProvider\Cms.Auth.IdentityProvider.csproj", "{7D707478-5EE6-4D8A-8FB1-18FF1F0921C7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{95358F53-F3B6-4DEB-A357-637FFFADACF6}"
 	ProjectSection(SolutionItems) = preProject

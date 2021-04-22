@@ -44,7 +44,7 @@ namespace Cms.Auth.IdentityProvider.Configuration
                 {
                     ClientId = "oidcClient",
                     ClientName = "Example Client Application",
-                    ClientSecrets = new List<Secret> {new Secret("SuperSecretPassword".Sha256())}, // change me!
+                    ClientSecrets = new List<Secret> {new Secret("secret".Sha256())},
     
                     AllowedGrantTypes = GrantTypes.Code,
                     RedirectUris = new List<string> {Environment.GetEnvironmentVariable("REDIRECT_URL")},

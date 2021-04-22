@@ -27,7 +27,7 @@ namespace Cms.Auth.IdentityProvider
         {
             services.AddControllersWithViews();
             //services.AddRazorPages();
-            services.AddMvc();
+            services.AddMvc((options) => { options.EnableEndpointRouting = false; });
             //configure identity server to use as service
             services.AddIdentityServer()
                  .AddInMemoryApiScopes(InMemoryConfiguration.GetApiScopes)
@@ -59,6 +59,7 @@ namespace Cms.Auth.IdentityProvider
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseMvc();
             app.UseRouting();
 
             app.UseAuthorization();
