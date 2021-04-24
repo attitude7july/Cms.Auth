@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Cms.Auth.IdentityProvider
 {
@@ -38,7 +39,7 @@ namespace Cms.Auth.IdentityProvider
             //Collection of different apis allow to use our authorization service
             services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
             {
-                b.WithOrigins("http://localhost:3000")
+                b.WithOrigins(Environment.GetEnvironmentVariable("CLIENT_REDIRECT_URL"))
                 .AllowAnyMethod()
                 .AllowAnyHeader();
             }));
