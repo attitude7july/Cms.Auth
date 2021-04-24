@@ -1,6 +1,7 @@
 using Cms.Auth.IdentityProvider.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -63,7 +64,7 @@ namespace Cms.Auth.IdentityProvider
             app.UseCors("CorsPolicy");
             //use identity server
             app.UseIdentityServer();
-
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
