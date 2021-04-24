@@ -1,11 +1,9 @@
 using Cms.Auth.IdentityProvider.Configuration;
-using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace Cms.Auth.IdentityProvider
 {
@@ -24,36 +22,28 @@ namespace Cms.Auth.IdentityProvider
             services.AddControllersWithViews();
             //services.AddRazorPages();
             //configure identity server to use as service
-            services.AddIdentityServer(options =>
-            {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
-                options.UserInteraction.LoginUrl = "/Account/Login";
-                options.UserInteraction.LogoutUrl = "/Account/Logout";
-                options.Authentication = new AuthenticationOptions()
-                {
-                    CookieLifetime = TimeSpan.FromHours(10), // ID server cookie timeout set to 10 hours
-                    CookieSlidingExpiration = true
-                };
-            })
-            .AddTestUsers(InMemoryConfiguration.GetApiUsers)
-            .AddInMemoryApiScopes(InMemoryConfiguration.GetApiScopes)
-            //.AddInMemoryIdentityResources(InMemoryConfiguration.GetIdentityResources)
+            services.AddIdentityServer()
             .AddDeveloperSigningCredential()
-            //.AddSigningCredential(new X509Certificate2(Environment.GetEnvironmentVariable("CERTIFICATE_PATH"), Environment.GetEnvironmentVariable("CERTIFICATE_PASSWORD")))
+            .AddInMemoryPersistedGrants()
+            .AddInMemoryIdentityResources(InMemoryConfiguration.GetIdentityResources)
+            .AddInMemoryApiResources(InMemoryConfiguration.GetApiResources)
             .AddInMemoryClients(InMemoryConfiguration.GetApiClients)
-            .AddInMemoryApiResources(InMemoryConfiguration.GetApiResources);
+            .AddTestUsers(InMemoryConfiguration.GetApiUsers);
+            //.AddInMemoryApiScopes(InMemoryConfiguration.GetApiScopes)
+            ////.AddInMemoryIdentityResources(InMemoryConfiguration.GetIdentityResources)
+            //.AddDeveloperSigningCredential()
+            ////.AddSigningCredential(new X509Certificate2(Environment.GetEnvironmentVariable("CERTIFICATE_PATH"), Environment.GetEnvironmentVariable("CERTIFICATE_PASSWORD")))
+            //.AddInMemoryClients(InMemoryConfiguration.GetApiClients)
+            //.AddInMemoryApiResources(InMemoryConfiguration.GetApiResources);
             //Collection of different apis allow to use our authorization service
-
             services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
             {
-                b.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
+                b.WithOrigins("http://localhost:3000")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
             }));
-            services.AddMvc(options => options.EnableEndpointRouting = false);
+            services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,16 +59,24 @@ namespace Cms.Auth.IdentityProvider
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors("CorsPolicy");
             //use identity server
             app.UseIdentityServer();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseCors();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
 
         }

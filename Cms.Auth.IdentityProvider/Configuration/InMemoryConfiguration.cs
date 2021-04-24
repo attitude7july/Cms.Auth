@@ -35,29 +35,22 @@ namespace Cms.Auth.IdentityProvider.Configuration
         public static IEnumerable<Client> GetApiClients => new List<Client> {
                 new Client
                 {
-                  ClientId = "cms",
-                  ClientSecrets = new[] { new Secret("secret".Sha256()) },
-                  AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                  AllowedScopes = new List<string> {"cms.read"}
-                },
-                new Client
-                {
                     ClientId = "oidcClient",
                     ClientName = "Example Client Application",
                     ClientSecrets = new List<Secret> {new Secret("secret".Sha256())},
-    
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = new List<string> {Environment.GetEnvironmentVariable("REDIRECT_URL")},
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
+                    AccessTokenLifetime = 120,
+                    RedirectUris =           { Environment.GetEnvironmentVariable("CLIENT_REDIRECT_URL") },//callback
+                    AllowedCorsOrigins =     { Environment.GetEnvironmentVariable("CLIENT_REDIRECT_URL") },
+                    PostLogoutRedirectUris = { Environment.GetEnvironmentVariable("CLIENT_POST_LOGOUT_URL") },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "role",
-                        "cms.read"
                     },
-                    RequirePkce = true,
-                    AllowPlainTextPkce = false
                 }
         };
 

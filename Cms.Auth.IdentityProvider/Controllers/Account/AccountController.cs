@@ -187,7 +187,6 @@ namespace Cms.Auth.IdentityProvider.Controllers
                 // we don't need to show the prompt and can just log the user out directly.
                 return await Logout(vm);
             }
-
             return View(vm);
         }
 
@@ -221,7 +220,6 @@ namespace Cms.Auth.IdentityProvider.Controllers
                 // this triggers a redirect to the external provider for sign-out
                 return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
             }
-
             return View("LoggedOut", vm);
         }
 
@@ -319,7 +317,6 @@ namespace Cms.Auth.IdentityProvider.Controllers
                 vm.ShowLogoutPrompt = false;
                 return vm;
             }
-
             // show the logout prompt. this prevents attacks where the user
             // is automatically signed out by another malicious web page.
             return vm;
