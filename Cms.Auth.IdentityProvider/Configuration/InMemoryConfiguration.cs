@@ -77,8 +77,8 @@ namespace Cms.Auth.IdentityProvider.Configuration
         public static X509Certificate2 GetX509Certificate2()
         {
             string base64Data = Environment.GetEnvironmentVariable("CERTIFICATE_PATH");
-            byte[] fileData =  Convert.FromBase64String(base64Data);
-            return new X509Certificate2(fileData, Environment.GetEnvironmentVariable("CERTIFICATE_PASSWORD"))
+            byte[] fileData = Convert.FromBase64String(base64Data);
+            return new X509Certificate2(fileData, Environment.GetEnvironmentVariable("CERTIFICATE_PASSWORD"));
         }
     }
 }
