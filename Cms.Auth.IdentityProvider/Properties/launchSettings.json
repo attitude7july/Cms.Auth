@@ -8,8 +8,9 @@
         "CERTIFICATE_PATH": "G:\\asmatechnocrats\\Self-SignedCertificates\\Cms.Auth\\authserver.pfx",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation",
-        "CLIENT_REDIRECT_URL": "http://localhost:3000",
-        "CLIENT_POST_LOGOUT_URL": "http://localhost:3000/logout"
+        "CLIENT_REDIRECT_URL": "http://localhost:3000/signin-oidc",
+        "CLIENT_POST_LOGOUT_URL": "http://localhost:3000/logout",
+        "CLIENT_URL": "http://localhost:3000"
       },
       "dotnetRunMessages": "true",
       "applicationUrl": "https://localhost:5000"

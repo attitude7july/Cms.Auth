@@ -42,8 +42,8 @@ namespace Cms.Auth.IdentityProvider.Configuration
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
                     AccessTokenLifetime = 120,
-                    RedirectUris =           { Environment.GetEnvironmentVariable("CLIENT_REDIRECT_URL") },//callback
-                    AllowedCorsOrigins =     { Environment.GetEnvironmentVariable("CLIENT_REDIRECT_URL") },
+                    RedirectUris =          { Environment.GetEnvironmentVariable("CLIENT_REDIRECT_URL") },//callback
+                    AllowedCorsOrigins =    { Environment.GetEnvironmentVariable("CLIENT_URL") },
                     PostLogoutRedirectUris = { Environment.GetEnvironmentVariable("CLIENT_POST_LOGOUT_URL") },
                     AllowedScopes = new List<string>
                     {
