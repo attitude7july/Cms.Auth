@@ -5,6 +5,7 @@ using IdentityServer4.Test;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Cms.Auth.IdentityProvider.Configuration
 {
@@ -72,5 +73,12 @@ namespace Cms.Auth.IdentityProvider.Configuration
             new ApiScope("cms.read", "Read Access to API #1"),
             new ApiScope("cms.write", "Write Access to API #1")
         };
+
+        public static X509Certificate2 GetX509Certificate2()
+        {
+            string base64Data = Environment.GetEnvironmentVariable("CERTIFICATE_PATH");
+            byte[] fileData =  Convert.FromBase64String(base64Data);
+            return new X509Certificate2(fileData, Environment.GetEnvironmentVariable("CERTIFICATE_PASSWORD"))
+        }
     }
 }

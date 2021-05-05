@@ -18,26 +18,22 @@ namespace Cms.Auth.IdentityProvider
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+
             services.AddControllersWithViews();
             //services.AddRazorPages();
-            //configure identity server to use as service
+            
             services.AddIdentityServer()
-            .AddDeveloperSigningCredential()
+            .AddSigningCredential(InMemoryConfiguration.GetX509Certificate2())
             .AddInMemoryPersistedGrants()
             .AddInMemoryIdentityResources(InMemoryConfiguration.GetIdentityResources)
             .AddInMemoryApiResources(InMemoryConfiguration.GetApiResources)
             .AddInMemoryClients(InMemoryConfiguration.GetApiClients)
             .AddTestUsers(InMemoryConfiguration.GetApiUsers);
-            //.AddInMemoryApiScopes(InMemoryConfiguration.GetApiScopes)
-            ////.AddInMemoryIdentityResources(InMemoryConfiguration.GetIdentityResources)
-            //.AddDeveloperSigningCredential()
-            ////.AddSigningCredential(new X509Certificate2(Environment.GetEnvironmentVariable("CERTIFICATE_PATH"), Environment.GetEnvironmentVariable("CERTIFICATE_PASSWORD")))
-            //.AddInMemoryClients(InMemoryConfiguration.GetApiClients)
-            //.AddInMemoryApiResources(InMemoryConfiguration.GetApiResources);
-            //Collection of different apis allow to use our authorization service
+           
+            
             services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
             {
                 b.WithOrigins(Environment.GetEnvironmentVariable("CLIENT_URL"))
@@ -47,8 +43,7 @@ namespace Cms.Auth.IdentityProvider
             services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -58,11 +53,9 @@ namespace Cms.Auth.IdentityProvider
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseCors("CorsPolicy");
-            //use identity server
             app.UseIdentityServer();
             app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
             app.UseHttpsRedirection();
