@@ -40,7 +40,7 @@ namespace Cms.Auth.IdentityProvider
             //Collection of different apis allow to use our authorization service
             services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
             {
-                b.WithOrigins(Environment.GetEnvironmentVariable("CLIENT_REDIRECT_URL"))
+                b.WithOrigins(Environment.GetEnvironmentVariable("CLIENT_URL"))
                 .AllowAnyMethod()
                 .AllowAnyHeader();
             }));
