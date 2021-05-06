@@ -76,7 +76,7 @@ namespace Cms.Auth.IdentityProvider.Configuration
 
         public static X509Certificate2 GetX509Certificate2()
         {
-            //string fileName = @"G:\asmatechnocrats\Self-SignedCertificates\Cms.Auth\prod\certificate.p12";
+            //string fileName = @"C:\openssl\bin\certificate.p12";
             //byte[] data = System.IO.File.ReadAllBytes(fileName);
             //string base64 = Convert.ToBase64String(data);
             string base64Data = Environment.GetEnvironmentVariable("CERTIFICATE_PATH");

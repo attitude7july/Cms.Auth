@@ -26,7 +26,7 @@ namespace Cms.Auth.IdentityProvider
             //services.AddRazorPages();
             
             services.AddIdentityServer()
-            .AddDeveloperSigningCredential()
+            .AddSigningCredential(InMemoryConfiguration.GetX509Certificate2())
             .AddInMemoryPersistedGrants()
             .AddInMemoryIdentityResources(InMemoryConfiguration.GetIdentityResources)
             .AddInMemoryApiResources(InMemoryConfiguration.GetApiResources)
