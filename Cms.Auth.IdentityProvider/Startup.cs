@@ -1,4 +1,5 @@
 using Cms.Auth.IdentityProvider.Configuration;
+using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,15 +24,14 @@ namespace Cms.Auth.IdentityProvider
             
 
             services.AddControllersWithViews();
-            //services.AddRazorPages();
-
+            
             services.AddIdentityServer()
             .AddSigningCredential(InMemoryConfiguration.GetX509Certificate2())
             .AddInMemoryIdentityResources(InMemoryConfiguration.GetIdentityResources)
             .AddInMemoryApiResources(InMemoryConfiguration.GetApiResources)
             .AddInMemoryClients(InMemoryConfiguration.GetApiClients)
             .AddTestUsers(InMemoryConfiguration.GetApiUsers);
-           
+             
             
             services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
             {
