@@ -35,7 +35,7 @@ namespace Cms.Auth.IdentityProvider
             
             services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
             {
-                b.WithOrigins(Environment.GetEnvironmentVariable("CLIENT_URL"))
+                b.WithOrigins(Environment.GetEnvironmentVariable("CLIENT_URL").Split(","))
                 .AllowAnyMethod()
                 .AllowAnyHeader();
             }));
