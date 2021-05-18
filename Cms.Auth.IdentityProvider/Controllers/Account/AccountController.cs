@@ -1,3 +1,7 @@
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Events;
@@ -10,17 +14,14 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+
 
 namespace Cms.Auth.IdentityProvider.Controllers
 {
     /// <summary>
-    /// This sample controller implements a typical login/logout/provision workflow for local and external accounts.
+    /// This sample controller implements a typical login/logout/provision work-flow for local and external accounts.
     /// The login service encapsulates the interactions with the user data store. This data store is in-memory only and cannot be used for production!
-    /// The interaction service provides a way for the UI to communicate with identityserver for validation and context retrieval
+    /// The interaction service provides a way for the UI to communicate with identity-server for validation and context retrieval
     /// </summary>
     [SecurityHeaders]
     [AllowAnonymous]
@@ -50,7 +51,7 @@ namespace Cms.Auth.IdentityProvider.Controllers
         }
 
         /// <summary>
-        /// Entry point into the login workflow
+        /// Entry point into the login work-flow
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
@@ -68,7 +69,7 @@ namespace Cms.Auth.IdentityProvider.Controllers
         }
 
         /// <summary>
-        /// Handle postback from username/password login
+        /// Handle post-back from username/password login
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -113,7 +114,7 @@ namespace Cms.Auth.IdentityProvider.Controllers
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username, clientId: context?.Client.ClientId));
 
                     // only set explicit expiration here if user chooses "remember me". 
-                    // otherwise we rely upon expiration configured in cookie middleware.
+                    // otherwise we rely upon expiration configured in cookie middle-ware.
                     AuthenticationProperties props = null;
                     if (AccountOptions.AllowRememberLogin && model.RememberLogin)
                     {
@@ -129,9 +130,8 @@ namespace Cms.Auth.IdentityProvider.Controllers
                         DisplayName = user.Username,
                         AdditionalClaims = user.Claims
                     };
-                    var identity = new ClaimsIdentity("password");
-                    identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
-                    await HttpContext.SignInAsync(isuser, props);
+                    var identity = new ClaimsIdentity(user.Claims,"password");
+                    await HttpContext.SignInAsync(new ClaimsPrincipal(identity), props);
                    // await HttpContext.SignInAsync(new ClaimsPrincipal(identity), props);
                     if (context != null)
                     {
@@ -191,7 +191,7 @@ namespace Cms.Auth.IdentityProvider.Controllers
         }
 
         /// <summary>
-        /// Handle logout page postback
+        /// Handle logout page post-back
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -339,7 +339,7 @@ namespace Cms.Auth.IdentityProvider.Controllers
             if (User?.Identity.IsAuthenticated == true)
             {
                 var idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
-                if (idp != null && idp != IdentityServer4.IdentityServerConstants.LocalIdentityProvider)
+                if (idp != null && idp != IdentityServerConstants.LocalIdentityProvider)
                 {
                     var providerSupportsSignout = await HttpContext.GetSchemeSupportsSignOutAsync(idp);
                     if (providerSupportsSignout)
@@ -348,7 +348,7 @@ namespace Cms.Auth.IdentityProvider.Controllers
                         {
                             // if there's no current logout context, we need to create one
                             // this captures necessary info from the current logged in user
-                            // before we signout and redirect away to the external IdP for signout
+                            // before we sign-out and redirect away to the external IdP for sign-out
                             vm.LogoutId = await _interaction.CreateLogoutContextAsync();
                         }
 

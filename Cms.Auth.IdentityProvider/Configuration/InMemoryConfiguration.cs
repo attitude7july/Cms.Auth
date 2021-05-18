@@ -1,4 +1,5 @@
-﻿using IdentityServer4;
+﻿using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using System;
@@ -11,37 +12,20 @@ namespace Cms.Auth.IdentityProvider.Configuration
     public class InMemoryConfiguration
     {
         public static IEnumerable<ApiResource> GetApiResources => new List<ApiResource> {
-         new ApiResource
-            {
-                Name = "cms",
-                DisplayName = "cms #1",
-                Description = "Allow the application to access API #1 on your behalf",
-                Scopes = new List<string> {"cms.read", "cms.write"},
-                ApiSecrets = new List<Secret> {new Secret("secret".Sha256())},
-                UserClaims = new List<string> {"role"}
-            }
+          new ApiResource("api1","My API")
         };
-        public static IEnumerable<IdentityResource> GetIdentityResources => new[]
+        public static IEnumerable<IdentityResource> GetIdentityResources => new List<IdentityResource>
             {
             new IdentityResources.OpenId(),
-            new IdentityResources.Profile(),
-            new IdentityResources.Email(),
-            new IdentityResource
-            {
-                Name = "role",
-                UserClaims = new List<string> {"role"}
-            }
-        };
+            new IdentityResources.Profile()
+             };
         public static IEnumerable<Client> GetApiClients => new List<Client> {
                 new Client
                 {
                     ClientId = "oidcClient",
-                    ClientName = "cms dashboard",
+                    ClientName = "content management",
                     ClientSecrets = new List<Secret> {new Secret("secret".Sha256())},
                     AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-                    RequireConsent = false,
-                    AccessTokenLifetime = 120,
                     RedirectUris =          { Environment.GetEnvironmentVariable("CLIENT_REDIRECT_URL") },//callback
                     AllowedCorsOrigins =    { Environment.GetEnvironmentVariable("CLIENT_URL") },
                     PostLogoutRedirectUris = { Environment.GetEnvironmentVariable("CLIENT_POST_LOGOUT_URL") },
@@ -49,7 +33,7 @@ namespace Cms.Auth.IdentityProvider.Configuration
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email,
+                        "api1"
                     },
                 }
         };
@@ -61,16 +45,15 @@ namespace Cms.Auth.IdentityProvider.Configuration
                 Username = "shahid",
                 Password = "password",
                 Claims = new List<Claim> {
-                    new Claim(ClaimTypes.Email, "shahidkochak@gmail.com"),
-                    new Claim(ClaimTypes.Role, "admin"),
-                    new Claim(ClaimTypes.Name, "shahidkochak@gmail.com")
+                    new Claim(JwtClaimTypes.Subject, "5BE86359-073C-434B-AD2D-A3932222DABE"),
+                    new Claim(JwtClaimTypes.PreferredUserName, "shahidkochak@gmail.com"),
+                    new Claim(JwtClaimTypes.Email, "shahidkochak@gmail.com"),
                 }
              },
         };
 
         public static IEnumerable<ApiScope> GetApiScopes => new List<ApiScope> {
-            new ApiScope("cms.read", "Read Access to API #1"),
-            new ApiScope("cms.write", "Write Access to API #1")
+           new ApiScope("api1", "My API")
         };
 
         public static X509Certificate2 GetX509Certificate2()
